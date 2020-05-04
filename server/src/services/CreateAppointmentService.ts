@@ -3,6 +3,8 @@ import { startOfHour } from 'date-fns';
 
 import Appointment from '../models/Appointment';
 import AppointmentsRepository from '../repositories/AppointmentsRepository';
+import UsersRepository from '../repositories/UsersRepository';
+import AppError from '../errors/AppError';
 
 interface Request {
   provider_id: string;
@@ -12,6 +14,7 @@ interface Request {
 class CreateAppointmentService {
   public async run({ provider_id, date }: Request): Promise<Appointment> {
     const appointmentsRepository = getCustomRepository(AppointmentsRepository);
+    const usersRepository = getCustomRepository(UsersRepository);
 
     const appointmentDate = startOfHour(date);
 
@@ -19,7 +22,12 @@ class CreateAppointmentService {
       appointmentDate,
     );
     if (appointmentConflict) {
-      throw new Error('There is already an appointment at this time');
+      throw new AppError('There is already an appointment at this time', 409);
+    }
+
+    const validProviderID = await usersRepository.findOne(provider_id);
+    if (!validProviderID) {
+      throw new AppError('No user with this ID.');
     }
 
     const appointment = appointmentsRepository.create({
