@@ -15,27 +15,45 @@ import Button from '../../components/Button';
 
 import { BackgroundImg, Container, YellowBox, Content } from './styles';
 
+import { useAuth } from '../../hooks/AuthContext';
+
+interface FormData {
+  email: string;
+  password: string;
+}
+
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+  const { user, signIn } = useAuth();
 
-  const handleSubmit = useCallback(async formData => {
-    try {
-      formRef.current?.setErrors({});
+  console.log(user);
 
-      const schema = yup.object().shape({
-        email: yup.string().required('E-mail is required'),
-        password: yup.string().required('Password is required'),
-      });
+  const handleSubmit = useCallback(
+    async (data: FormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      await schema.validate(formData, {
-        abortEarly: false,
-      });
-    } catch (err) {
-      const errors = getInputErrors(err);
+        const schema = yup.object().shape({
+          email: yup.string().required('E-mail is required'),
+          password: yup.string().required('Password is required'),
+        });
 
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        await schema.validate(data, {
+          abortEarly: false,
+        });
+
+        signIn({
+          email: data.email,
+          password: data.password,
+        });
+      } catch (err) {
+        const errors = getInputErrors(err);
+
+        formRef.current?.setErrors(errors);
+      }
+    },
+    [signIn],
+  );
 
   return (
     <BackgroundImg>
