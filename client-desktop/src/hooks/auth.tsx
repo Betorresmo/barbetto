@@ -71,4 +71,4 @@ const useAuth = (): AuthContextData => {
   return useContext(AuthContext);
 };
 
-export { AuthContext, AuthProvider, useAuth };
+export { AuthProvider, useAuth };

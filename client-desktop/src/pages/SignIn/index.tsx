@@ -15,7 +15,8 @@ import Button from '../../components/Button';
 
 import { BackgroundImg, Container, YellowBox, Content } from './styles';
 
-import { useAuth } from '../../hooks/AuthContext';
+import { useAuth } from '../../hooks/auth';
+import { useToast } from '../../hooks/toast';
 
 interface FormData {
   email: string;
@@ -25,6 +26,7 @@ interface FormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const { user, signIn } = useAuth();
+  const { addToast } = useToast();
 
   console.log(user);
 
@@ -42,17 +44,25 @@ const SignIn: React.FC = () => {
           abortEarly: false,
         });
 
-        signIn({
+        await signIn({
           email: data.email,
           password: data.password,
         });
       } catch (err) {
-        const errors = getInputErrors(err);
+        if (err instanceof yup.ValidationError) {
+          const errors = getInputErrors(err);
 
-        formRef.current?.setErrors(errors);
+          formRef.current?.setErrors(errors);
+        } else {
+          addToast({
+            type: 'error',
+            title: 'Authentication Error',
+            description: 'Verify your credentials.',
+          });
+        }
       }
     },
-    [signIn],
+    [signIn, addToast],
   );
 
   return (

@@ -8,6 +8,7 @@ export default createGlobalStyle`
     box-sizing: border-box;
     outline: 0;
     font-weight: 600;
+    font-size: 16px;
   }
 
   body{
@@ -18,7 +19,6 @@ export default createGlobalStyle`
 
   body, input, button {
     font-family: 'Nunito Sans', 'sans serif';
-    font-size: 18px;
     color: #202020;
   }
 
