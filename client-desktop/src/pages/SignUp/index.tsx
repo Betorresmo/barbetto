@@ -5,6 +5,7 @@ import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
 
+import api from '../../services/api';
 import getInputErrors from '../../utils/getInputErrors';
 import { useToast } from '../../hooks/toast';
 
@@ -15,6 +16,12 @@ import { BackgroundImg, Content } from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
+interface FormData {
+  name: string;
+  email: string;
+  password: string;
+}
+
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
@@ -22,7 +29,7 @@ const SignUp: React.FC = () => {
   const history = useHistory();
 
   const handleSubmit = useCallback(
-    async formData => {
+    async (formData: FormData) => {
       try {
         formRef.current?.setErrors({});
 
@@ -42,6 +49,8 @@ const SignUp: React.FC = () => {
         await schema.validate(formData, {
           abortEarly: false,
         });
+
+        await api.post('/users', formData);
 
         addToast({
           type: 'success',
