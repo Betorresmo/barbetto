@@ -1,5 +1,6 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { transparentize } from 'polished';
+import { animated } from 'react-spring';
 
 import backgroundImg from '../../assets/signin-background.svg';
 
@@ -15,9 +16,32 @@ export const Container = styled.div`
   padding: 0 40px;
   max-width: 1140px;
   margin: 0 auto;
+  overflow: hidden;
 
   display: flex;
   justify-content: space-between;
+`;
+
+const topYellowBoxAnimation = keyframes`
+  from {
+    transform: translateY(-120%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+`;
+
+const bottomYellowBoxAnimation = keyframes`
+  from {
+    transform: translateY(120%);
+    opacity: 0.5;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
 `;
 
 export const YellowBox = styled.div`
@@ -31,6 +55,8 @@ export const YellowBox = styled.div`
   display: flex;
   flex-direction: column;
 
+  animation: ${topYellowBoxAnimation} 500ms ease;
+
   &:first-child {
     img:first-child {
       margin-bottom: 40px;
@@ -40,7 +66,14 @@ export const YellowBox = styled.div`
   & + div {
     align-self: flex-end;
     border-radius: 15px 15px 0 0;
+
+    animation: ${bottomYellowBoxAnimation} 500ms ease;
   }
+`;
+
+export const AnimatedLogoContainer = styled(animated.div)`
+  display: flex;
+  justify-content: center;
 `;
 
 export const Content = styled.div`

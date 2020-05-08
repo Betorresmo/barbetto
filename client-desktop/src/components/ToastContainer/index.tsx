@@ -1,5 +1,5 @@
 import React from 'react';
-import { useTransition } from 'react-spring';
+import { useTransition, config } from 'react-spring';
 
 import { Container } from './styles';
 import Toast from './Toast';
@@ -14,6 +14,7 @@ const ToastContainer: React.FC<ToastContainerProps> = ({ messages }) => {
     from: { transform: 'translateX(-120%)' },
     enter: { transform: 'translateX(0)' },
     leave: { transform: 'translateX(-120%)' },
+    config: config.gentle,
   });
 
   return (

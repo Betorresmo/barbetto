@@ -4,6 +4,7 @@ import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
 import { Link, useHistory } from 'react-router-dom';
+import { config, useSpring } from 'react-spring';
 
 import getInputErrors from '../../utils/getInputErrors';
 
@@ -14,7 +15,13 @@ import mobileDownloadImg from '../../assets/mobile-download.svg';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { BackgroundImg, Container, YellowBox, Content } from './styles';
+import {
+  BackgroundImg,
+  Container,
+  YellowBox,
+  AnimatedLogoContainer,
+  Content,
+} from './styles';
 
 import { useAuth } from '../../hooks/auth';
 import { useToast } from '../../hooks/toast';
@@ -27,11 +34,9 @@ interface FormData {
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const { user, signIn } = useAuth();
+  const { signIn } = useAuth();
   const { addToast } = useToast();
   const history = useHistory();
-
-  console.log(user);
 
   const handleSubmit = useCallback(
     async (data: FormData) => {
@@ -71,11 +76,24 @@ const SignIn: React.FC = () => {
     [signIn, addToast, history],
   );
 
+  const logoAnimation = useSpring({
+    delay: 500,
+    from: {
+      transform: 'translateY(-135%)',
+    },
+    to: {
+      transform: 'translateY(0)',
+    },
+    config: config.gentle,
+  });
+
   return (
     <BackgroundImg>
       <Container>
         <YellowBox>
-          <img src={logoImg} alt="barbetto Logo" />
+          <AnimatedLogoContainer style={logoAnimation}>
+            <img src={logoImg} alt="barbetto Logo" />
+          </AnimatedLogoContainer>
           <img src={goatImg} alt="Goat Logo" />
         </YellowBox>
 

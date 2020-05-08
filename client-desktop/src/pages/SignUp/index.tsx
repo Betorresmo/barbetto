@@ -4,6 +4,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
 import { Link, useHistory } from 'react-router-dom';
+import { useSpring, config } from 'react-spring';
 
 import api from '../../services/api';
 import getInputErrors from '../../utils/getInputErrors';
@@ -12,7 +13,7 @@ import { useToast } from '../../hooks/toast';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
-import { BackgroundImg, Content } from './styles';
+import { BackgroundImg, AnimatedContainer, Content } from './styles';
 
 import logoImg from '../../assets/logo.svg';
 
@@ -77,10 +78,24 @@ const SignUp: React.FC = () => {
     [addToast, history],
   );
 
+  const logoAnimationProps = useSpring({
+    from: {
+      opacity: 0.2,
+      transform: 'translateX(-100px)',
+    },
+    to: {
+      opacity: 1,
+      transform: 'translateX(0)',
+    },
+    config: config.gentle,
+  });
+
   return (
     <BackgroundImg>
       <Content>
-        <img src={logoImg} alt="" />
+        <AnimatedContainer style={logoAnimationProps}>
+          <img src={logoImg} alt="" />
+        </AnimatedContainer>
 
         <Form ref={formRef} onSubmit={handleSubmit}>
           <Input name="name" icon={FiUser} type="text" />

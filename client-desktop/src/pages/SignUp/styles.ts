@@ -1,4 +1,5 @@
-import styled from 'styled-components';
+import styled, { keyframes } from 'styled-components';
+import { animated } from 'react-spring';
 
 import backgroundImg from '../../assets/signup-background.svg';
 
@@ -14,6 +15,12 @@ export const BackgroundImg = styled.div`
   align-items: center;
 `;
 
+export const AnimatedContainer = styled(animated.div)`
+  display: flex;
+  justify-content: center;
+  margin-bottom: 40px;
+`;
+
 export const Content = styled.div`
   background: #d59833;
   padding: 40px;
@@ -23,10 +30,6 @@ export const Content = styled.div`
 
   display: flex;
   flex-direction: column;
-
-  img {
-    margin-bottom: 40px;
-  }
 
   > a {
     margin-top: 40px;
