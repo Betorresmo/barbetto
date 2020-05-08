@@ -3,6 +3,7 @@ import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
 import { FiLogIn, FiMail, FiLock } from 'react-icons/fi';
+import { Link, useHistory } from 'react-router-dom';
 
 import getInputErrors from '../../utils/getInputErrors';
 
@@ -25,8 +26,10 @@ interface FormData {
 
 const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
+
   const { user, signIn } = useAuth();
   const { addToast } = useToast();
+  const history = useHistory();
 
   console.log(user);
 
@@ -48,21 +51,24 @@ const SignIn: React.FC = () => {
           email: data.email,
           password: data.password,
         });
+
+        history.push('/dashboard');
       } catch (err) {
         if (err instanceof yup.ValidationError) {
           const errors = getInputErrors(err);
 
           formRef.current?.setErrors(errors);
-        } else {
-          addToast({
-            type: 'error',
-            title: 'Authentication Error',
-            description: 'Verify your credentials.',
-          });
+          return;
         }
+
+        addToast({
+          type: 'error',
+          title: 'Authentication Error',
+          description: 'Verify your credentials.',
+        });
       }
     },
-    [signIn, addToast],
+    [signIn, addToast, history],
   );
 
   return (
@@ -86,10 +92,10 @@ const SignIn: React.FC = () => {
               <img src={mobileDownloadImg} alt="Download for mobile" />
             </a>
 
-            <a href="lala">
+            <Link to="/signup">
               create an account
               <FiLogIn size={18} />
-            </a>
+            </Link>
           </Content>
         </YellowBox>
       </Container>

@@ -3,8 +3,10 @@ import { FiUser, FiMail, FiLock, FiChevronLeft } from 'react-icons/fi';
 import { Form } from '@unform/web';
 import { FormHandles } from '@unform/core';
 import * as yup from 'yup';
+import { Link, useHistory } from 'react-router-dom';
 
 import getInputErrors from '../../utils/getInputErrors';
+import { useToast } from '../../hooks/toast';
 
 import Input from '../../components/Input';
 import Button from '../../components/Button';
@@ -16,32 +18,55 @@ import logoImg from '../../assets/logo.svg';
 const SignUp: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
 
-  const handleSubmit = useCallback(async formData => {
-    try {
-      formRef.current?.setErrors({});
+  const { addToast } = useToast();
+  const history = useHistory();
 
-      const schema = yup.object().shape({
-        name: yup.string().required('Name is required'),
-        email: yup
-          .string()
-          .required('Email is required')
-          .email('E-mail not valid'),
-        password: yup
-          .string()
-          .required('Password required')
-          .min(6, 'Minimum of 6 digits')
-          .max(15, 'Maximum of 15 digits'),
-      });
+  const handleSubmit = useCallback(
+    async formData => {
+      try {
+        formRef.current?.setErrors({});
 
-      await schema.validate(formData, {
-        abortEarly: false,
-      });
-    } catch (err) {
-      const errors = getInputErrors(err);
+        const schema = yup.object().shape({
+          name: yup.string().required('Name is required'),
+          email: yup
+            .string()
+            .required('Email is required')
+            .email('E-mail not valid'),
+          password: yup
+            .string()
+            .required('Password required')
+            .min(6, 'Minimum of 6 digits')
+            .max(15, 'Maximum of 15 digits'),
+        });
 
-      formRef.current?.setErrors(errors);
-    }
-  }, []);
+        await schema.validate(formData, {
+          abortEarly: false,
+        });
+
+        addToast({
+          type: 'success',
+          title: 'Registration complete!',
+          description: 'Now you can enter barbetto.',
+        });
+
+        history.push('/');
+      } catch (err) {
+        if (err instanceof yup.ValidationError) {
+          const errors = getInputErrors(err);
+
+          formRef.current?.setErrors(errors);
+          return;
+        }
+
+        addToast({
+          type: 'error',
+          title: 'Authentication Error',
+          description: 'Verify your credentials.',
+        });
+      }
+    },
+    [addToast, history],
+  );
 
   return (
     <BackgroundImg>
@@ -56,10 +81,10 @@ const SignUp: React.FC = () => {
           <Button type="submit">sign up</Button>
         </Form>
 
-        <a href="return">
+        <Link to="/">
           <FiChevronLeft size={18} />
           return
-        </a>
+        </Link>
       </Content>
     </BackgroundImg>
   );
