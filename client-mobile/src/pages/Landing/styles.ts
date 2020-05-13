@@ -20,7 +20,7 @@ export const LogoButtonContainer = styled.View`
 `;
 
 export const LogoImage = styled.Image`
-  margin-left: 20px;
+  margin-left: 40px;
   transform: scale(0.9);
 `;
 
