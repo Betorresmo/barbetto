@@ -9,12 +9,14 @@ export const Container = styled.View`
 `;
 
 export const LogoContainer = styled.View`
-  /* margin: auto 0; */
+  flex: 1;
+  justify-content: center;
 `;
 
 export const FormContainer = styled.View`
   width: 100%;
   align-items: center;
+  flex: 2;
 `;
 
 export const ForgotPassword = styled.TouchableOpacity`
@@ -27,7 +29,7 @@ export const ForgotPasswordText = styled.Text`
   color: ${transparentize(0.5, '#ececec')};
 `;
 
-export const SignUpButton = styled.View`
+export const SignUpButton = styled.TouchableOpacity`
   flex-direction: row;
   justify-content: center;
   align-items: center;
@@ -38,6 +40,7 @@ export const SignUpButtonText = styled.Text`
   font-family: 'NunitoSans-SemiBold';
   font-size: 16px;
   margin-right: 5px;
+  padding-bottom: 3px;
   align-items: center;
   justify-content: center;
 `;

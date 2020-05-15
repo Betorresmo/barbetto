@@ -15,4 +15,5 @@ export const ButtonText = styled.Text`
   font-size: 20px;
   font-family: 'NunitoSans-SemiBold';
   color: #202020;
+  padding-bottom: 4px;
 `;

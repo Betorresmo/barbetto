@@ -1,6 +1,9 @@
-import React from 'react';
-import { Image } from 'react-native';
+import React, { useRef, useCallback } from 'react';
+import { Image, ScrollView } from 'react-native';
+import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
+import { Form } from '@unform/mobile';
+import { FormHandles } from '@unform/core';
 
 import {
   Container,
@@ -18,28 +21,45 @@ import Button from '../../components/Button';
 import lightLogoImg from '../../assets/lightLogo.png';
 
 const SignIn: React.FC = () => {
+  const navigation = useNavigation();
+
+  const formRef = useRef<FormHandles>(null);
+
+  const handleSignIn = useCallback(data => {
+    console.log(data);
+  }, []);
+
   return (
-    <Container>
-      <LogoContainer>
-        <Image source={lightLogoImg} />
-      </LogoContainer>
+    <ScrollView
+      contentContainerStyle={{ flex: 1 }}
+      keyboardShouldPersistTaps="handled"
+    >
+      <Container>
+        <LogoContainer>
+          <Image source={lightLogoImg} />
+        </LogoContainer>
 
-      <FormContainer>
-        <Input name="email" icon="mail" />
-        <Input name="password" icon="lock" />
+        <FormContainer>
+          <Form ref={formRef} onSubmit={handleSignIn}>
+            <Input name="email" icon="mail" />
+            <Input name="password" icon="lock" />
 
-        <Button onPress={() => console.log('btn press')}>sign in</Button>
+            <Button onPress={() => formRef.current?.submitForm()}>
+              sign in
+            </Button>
 
-        <ForgotPassword>
-          <ForgotPasswordText>forgot your password?</ForgotPasswordText>
-        </ForgotPassword>
-      </FormContainer>
+            <ForgotPassword>
+              <ForgotPasswordText>forgot your password?</ForgotPasswordText>
+            </ForgotPassword>
+          </Form>
+        </FormContainer>
 
-      <SignUpButton>
-        <SignUpButtonText>sign up</SignUpButtonText>
-        <Icon name="log-in" color="#ececec" size={16} />
-      </SignUpButton>
-    </Container>
+        <SignUpButton onPress={() => navigation.navigate('SignUp')}>
+          <SignUpButtonText>sign up</SignUpButtonText>
+          <Icon name="log-in" color="#ececec" size={16} />
+        </SignUpButton>
+      </Container>
+    </ScrollView>
   );
 };
 

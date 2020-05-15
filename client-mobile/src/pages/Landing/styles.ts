@@ -1,5 +1,4 @@
 import styled from 'styled-components/native';
-import { RectButton } from 'react-native-gesture-handler';
 
 export const Background = styled.View`
   flex: 1;
@@ -24,17 +23,3 @@ export const LogoImage = styled.Image`
   transform: scale(0.9);
 `;
 
-export const ButtonContainer = styled.View`
-  overflow: hidden;
-  border-radius: 15px;
-  border-top-right-radius: 0px;
-  border-bottom-right-radius: 0px;
-`;
-
-export const Button = styled(RectButton)`
-  background: #202020;
-  height: 70px;
-  width: 70px;
-  justify-content: center;
-  align-items: center;
-`;

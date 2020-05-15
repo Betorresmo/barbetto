@@ -1,5 +1,5 @@
 import styled from 'styled-components/native';
-import { transparentize } from 'polished';
+import { transparentize, darken } from 'polished';
 import VectorIcon from 'react-native-vector-icons/Feather';
 
 export const Container = styled.View`
@@ -21,10 +21,10 @@ export const Icon = styled(VectorIcon)`
   margin-right: 10px;
 `;
 
-export const InputField = styled.TextInput`
+export const TextInput = styled.TextInput`
   flex: 1;
-  font-family: 'NunitoSans-SemiBold';
+  font-family: 'NunitoSans-Regular';
   font-size: 16px;
-  color: #ececec;
+  color: ${darken(0.2, '#ececec')};
   text-decoration: none;
 `;

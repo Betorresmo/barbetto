@@ -1,20 +1,22 @@
 import React from 'react';
 import { Image } from 'react-native';
-import Icon from 'react-native-vector-icons/Feather';
+import { useNavigation } from '@react-navigation/native';
+
+import NavigationButton from '../../components/NavigationButton';
 
 import {
   Background,
   GoatContainer,
   LogoButtonContainer,
   LogoImage,
-  ButtonContainer,
-  Button,
 } from './styles';
 
 import goatImg from '../../assets/goat.png';
 import darkLogoImg from '../../assets/darkLogo.png';
 
 const Landing: React.FC = () => {
+  const navigation = useNavigation();
+
   return (
     <Background>
       <GoatContainer>
@@ -22,11 +24,11 @@ const Landing: React.FC = () => {
       </GoatContainer>
       <LogoButtonContainer>
         <LogoImage source={darkLogoImg} />
-        <ButtonContainer>
-          <Button>
-            <Icon name="chevron-right" color="#ececec" size={24} />
-          </Button>
-        </ButtonContainer>
+        <NavigationButton
+          onPress={() => navigation.navigate('SignIn')}
+          direction="right"
+          theme="dark"
+        />
       </LogoButtonContainer>
     </Background>
   );
