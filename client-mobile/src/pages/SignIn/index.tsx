@@ -1,5 +1,5 @@
 import React, { useRef, useCallback } from 'react';
-import { Image, ScrollView } from 'react-native';
+import { Image, ScrollView, TextInput } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Form } from '@unform/mobile';
@@ -24,6 +24,7 @@ const SignIn: React.FC = () => {
   const navigation = useNavigation();
 
   const formRef = useRef<FormHandles>(null);
+  const passwordInputRef = useRef<TextInput>(null);
 
   const handleSignIn = useCallback(data => {
     console.log(data);
@@ -41,8 +42,26 @@ const SignIn: React.FC = () => {
 
         <FormContainer>
           <Form ref={formRef} onSubmit={handleSignIn}>
-            <Input name="email" icon="mail" />
-            <Input name="password" icon="lock" />
+            <Input
+              autoCorrect={false}
+              autoCapitalize="none"
+              keyboardType="email-address"
+              name="email"
+              icon="mail"
+              returnKeyType="next"
+              onSubmitEditing={() => {
+                passwordInputRef.current?.focus();
+              }}
+              blurOnSubmit={false}
+            />
+            <Input
+              ref={passwordInputRef}
+              secureTextEntry
+              name="password"
+              icon="lock"
+              returnKeyType="send"
+              onSubmitEditing={() => formRef.current?.submitForm()}
+            />
 
             <Button onPress={() => formRef.current?.submitForm()}>
               sign in
