@@ -1,9 +1,10 @@
 import React, { useRef, useCallback } from 'react';
-import { Image, ScrollView, TextInput } from 'react-native';
+import { Image, ScrollView, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import Icon from 'react-native-vector-icons/Feather';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
+import * as yup from 'yup';
 
 import {
   Container,
@@ -18,7 +19,14 @@ import {
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+import getInputErrors from '../../utils/getInputErrors';
+
 import lightLogoImg from '../../assets/lightLogo.png';
+
+interface SignInFormData {
+  email: string;
+  password: string;
+}
 
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
@@ -26,8 +34,29 @@ const SignIn: React.FC = () => {
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const handleSignIn = useCallback(data => {
-    console.log(data);
+  const handleSignIn = useCallback(async (formData: SignInFormData) => {
+    try {
+      formRef.current?.setErrors({});
+
+      const schema = yup.object().shape({
+        email: yup.string().required('E-mail is required'),
+        password: yup.string().required('Password is required'),
+      });
+
+      await schema.validate(formData, {
+        abortEarly: false,
+      });
+
+      /* make request */
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const errors = getInputErrors(err);
+
+        formRef.current?.setErrors(errors);
+        return;
+      }
+      Alert.alert('Authentication Error', 'Verify your credentials.');
+    }
   }, []);
 
   return (

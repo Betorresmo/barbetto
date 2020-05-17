@@ -1,9 +1,10 @@
 import React, { useRef, useCallback } from 'react';
-import { Image, ScrollView, TextInput } from 'react-native';
+import { Image, ScrollView, TextInput, Alert } from 'react-native';
 import { useNavigation } from '@react-navigation/native';
 import { Form } from '@unform/mobile';
 import { FormHandles } from '@unform/core';
 import { HideWithKeyboard } from 'react-native-hide-with-keyboard';
+import * as yup from 'yup';
 
 import {
   Container,
@@ -12,11 +13,19 @@ import {
   NavigationButtonContainer,
 } from './styles';
 
+import lightLogoImg from '../../assets/lightLogo.png';
+
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import NavigationButton from '../../components/NavigationButton';
 
-import lightLogoImg from '../../assets/lightLogo.png';
+import getInputErrors from '../../utils/getInputErrors';
+
+interface SignUpFormData {
+  name: string;
+  email: string;
+  password: string;
+}
 
 const SignUp: React.FC = () => {
   const navigation = useNavigation();
@@ -25,8 +34,40 @@ const SignUp: React.FC = () => {
   const emailInputRef = useRef<TextInput>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const handleSubmit = useCallback(data => {
-    console.log(data);
+  const handleSubmit = useCallback(async (formData: SignUpFormData) => {
+    try {
+      formRef.current?.setErrors({});
+
+      const schema = yup.object().shape({
+        name: yup.string().required('Name is required'),
+        email: yup
+          .string()
+          .required('Email is required')
+          .email('E-mail not valid'),
+        password: yup
+          .string()
+          .required('Password required')
+          .min(6, 'Minimum of 6 digits')
+          .max(15, 'Maximum of 15 digits'),
+      });
+
+      await schema.validate(formData, {
+        abortEarly: false,
+      });
+
+      /* make request */
+
+      Alert.alert('Registration complete', 'Now you can enter barbetto.');
+    } catch (err) {
+      if (err instanceof yup.ValidationError) {
+        const errors = getInputErrors(err);
+
+        formRef.current?.setErrors(errors);
+        return;
+      }
+
+      Alert.alert('Registration Error', 'Verify your info.');
+    }
   }, []);
 
   return (

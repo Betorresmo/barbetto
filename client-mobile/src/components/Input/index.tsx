@@ -3,6 +3,8 @@ import React, {
   useEffect,
   useImperativeHandle,
   forwardRef,
+  useState,
+  useCallback,
 } from 'react';
 import { TextInputProperties } from 'react-native';
 import { useField } from '@unform/core';
@@ -42,7 +44,7 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
       name: fieldName,
       ref: inputValueRef.current,
       path: 'value',
-      setValue(ref: any, value) {
+      setValue(value) {
         inputValueRef.current.value = value;
         inputElementRef.current.setNativeProps({ text: value });
       },
@@ -53,15 +55,28 @@ const Input: React.RefForwardingComponent<InputRef, InputProps> = (
     });
   }, [fieldName, registerField]);
 
+  const [hasFocus, setHasFocus] = useState(false);
+  const [isFilled, setIsFilled] = useState(false);
+
+  const handleInputFocus = useCallback(() => {
+    setHasFocus(true);
+  }, []);
+  const handleInputBlur = useCallback(() => {
+    setHasFocus(false);
+    setIsFilled(!!inputValueRef.current.value);
+  }, []);
+
   return (
-    <Container>
-      <Icon name={icon} size={24} />
+    <Container hasFocus={hasFocus} isFilled={isFilled} hasError={!!error}>
+      <Icon hasFocus={hasFocus} isFilled={isFilled} name={icon} size={24} />
       <TextInput
         ref={inputElementRef}
         defaultValue={defaultValue}
         onChangeText={value => {
           inputValueRef.current.value = value;
         }}
+        onFocus={handleInputFocus}
+        onBlur={handleInputBlur}
         {...rest}
       />
     </Container>
