@@ -19,6 +19,7 @@ import {
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 
+import { useAuth } from '../../hooks/auth';
 import getInputErrors from '../../utils/getInputErrors';
 
 import lightLogoImg from '../../assets/lightLogo.png';
@@ -31,33 +32,38 @@ interface SignInFormData {
 const SignIn: React.FC = () => {
   const navigation = useNavigation();
 
+  const { signIn } = useAuth();
+
   const formRef = useRef<FormHandles>(null);
   const passwordInputRef = useRef<TextInput>(null);
 
-  const handleSignIn = useCallback(async (formData: SignInFormData) => {
-    try {
-      formRef.current?.setErrors({});
+  const handleSignIn = useCallback(
+    async (formData: SignInFormData) => {
+      try {
+        formRef.current?.setErrors({});
 
-      const schema = yup.object().shape({
-        email: yup.string().required('E-mail is required'),
-        password: yup.string().required('Password is required'),
-      });
+        const schema = yup.object().shape({
+          email: yup.string().required('E-mail is required'),
+          password: yup.string().required('Password is required'),
+        });
 
-      await schema.validate(formData, {
-        abortEarly: false,
-      });
+        await schema.validate(formData, {
+          abortEarly: false,
+        });
 
-      /* make request */
-    } catch (err) {
-      if (err instanceof yup.ValidationError) {
-        const errors = getInputErrors(err);
+        await signIn(formData);
+      } catch (err) {
+        if (err instanceof yup.ValidationError) {
+          const errors = getInputErrors(err);
 
-        formRef.current?.setErrors(errors);
-        return;
+          formRef.current?.setErrors(errors);
+          return;
+        }
+        Alert.alert('Authentication Error', 'Verify your credentials.');
       }
-      Alert.alert('Authentication Error', 'Verify your credentials.');
-    }
-  }, []);
+    },
+    [signIn],
+  );
 
   return (
     <ScrollView
