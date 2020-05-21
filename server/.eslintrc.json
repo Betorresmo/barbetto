@@ -43,6 +43,8 @@
       {
         "ts": "never"
       }
-    ]
+    ],
+    "@typescript-eslint/interface-name-prefix": ["error", { "prefixWithI": "always" }],
+    "no-useless-constructor": "off"
   }
 }
