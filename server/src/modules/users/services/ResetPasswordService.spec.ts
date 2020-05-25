@@ -1,4 +1,4 @@
-// import AppError from '@shared/errors/AppError';
+import AppError from '@shared/errors/AppError';
 
 import FakeUsersRepository from '@modules/users/repositories/fakes/FakeUsersRepository';
 import FakeUserTokensRepository from '@modules/users/repositories/fakes/FakeUserTokensRepository';
@@ -45,5 +45,50 @@ describe('ResetPassword', () => {
 
     expect(generateHashSpy).toHaveBeenCalledWith(newPassword);
     expect(updatedPasswordUser?.password).toBe(`hash${newPassword}`);
+  });
+
+  it('should not be able to reset the password with non-existent token', async () => {
+    await expect(
+      resetPassword.run({
+        token: 'non-existent token',
+        password: '654321',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password of non-existent user', async () => {
+    const { token } = await fakeUserTokensRepository.generate(
+      'non-existent user',
+    );
+
+    await expect(
+      resetPassword.run({
+        token,
+        password: '654321',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
+  });
+
+  it('should not be able to reset the password with expired tokens', async () => {
+    const user = await fakeUsersRepository.create({
+      name: 'George',
+      email: 'george@email.com',
+      password: '123456',
+    });
+
+    const { token } = await fakeUserTokensRepository.generate(user.id);
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      const customDate = new Date();
+
+      return customDate.setHours(customDate.getHours() + 3);
+    });
+
+    await expect(
+      resetPassword.run({
+        token,
+        password: '654321',
+      }),
+    ).rejects.toBeInstanceOf(AppError);
   });
 });
