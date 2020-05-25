@@ -8,15 +8,15 @@ class FakeUsersRepository implements IUsersRepository {
   private users: User[] = [];
 
   public async findById(id: string): Promise<User | undefined> {
-    const userWithId = this.users.find(user => user.id === id);
+    const user = this.users.find(userItem => userItem.id === id);
 
-    return userWithId;
+    return user;
   }
 
   public async findByEmail(email: string): Promise<User | undefined> {
-    const userWithEmail = this.users.find(user => user.email === email);
+    const user = this.users.find(userItem => userItem.email === email);
 
-    return userWithEmail;
+    return user;
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
