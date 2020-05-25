@@ -3,6 +3,8 @@ import { injectable, inject } from 'tsyringe';
 import AppError from '@shared/errors/AppError';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IUserTokensRepository from '@modules/users/repositories/IUserTokensRepository';
+
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 
 interface IRequest {
@@ -15,6 +17,9 @@ class SendPasswordRecoveryEmail {
     @inject('UsersRepository')
     private usersRepository: IUsersRepository,
 
+    @inject('UserTokensRepository')
+    private userTokensRepository: IUserTokensRepository,
+
     @inject('MailProvider')
     private mailProvider: IMailProvider,
   ) {}
@@ -25,7 +30,12 @@ class SendPasswordRecoveryEmail {
       throw new AppError('Email not found.');
     }
 
-    await this.mailProvider.sendMail(email, 'Password recovery body');
+    const userToken = await this.userTokensRepository.generate(user.id);
+
+    await this.mailProvider.sendMail(
+      email,
+      `Password recovery body ${userToken.token}`,
+    );
   }
 }
 
