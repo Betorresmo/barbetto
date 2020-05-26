@@ -25,7 +25,6 @@ class SendPasswordRecoveryEmail {
   ) {}
 
   public async run({ email }: IRequest): Promise<void> {
-    console.log(email);
     const user = await this.usersRepository.findByEmail(email);
     if (!user) {
       throw new AppError('Email not found.');
