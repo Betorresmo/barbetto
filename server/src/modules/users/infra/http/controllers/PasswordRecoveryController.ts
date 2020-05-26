@@ -6,12 +6,13 @@ import SendPasswordRecoveryEmailService from '@modules/users/services/SendPasswo
 class PasswordRecoveryController {
   public async create(req: Request, res: Response): Promise<Response> {
     const { email } = req.body;
-
     const sendPasswordRecoveryEmail = container.resolve(
       SendPasswordRecoveryEmailService,
     );
 
-    await sendPasswordRecoveryEmail.run(email);
+    await sendPasswordRecoveryEmail.run({
+      email,
+    });
 
     return res.status(204).json();
   }
