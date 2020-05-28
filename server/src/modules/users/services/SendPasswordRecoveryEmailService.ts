@@ -1,4 +1,5 @@
 import { injectable, inject } from 'tsyringe';
+import path from 'path';
 
 import AppError from '@shared/errors/AppError';
 
@@ -30,12 +31,28 @@ class SendPasswordRecoveryEmail {
       throw new AppError('Email not found.');
     }
 
-    const userToken = await this.userTokensRepository.generate(user.id);
-
-    await this.mailProvider.sendMail(
-      email,
-      `Password recovery token: ${userToken.token}`,
+    const { token } = await this.userTokensRepository.generate(user.id);
+    const passwordRecoveryMailTemplate = path.resolve(
+      __dirname,
+      '..',
+      'views',
+      'password_recovery.hbs',
     );
+
+    await this.mailProvider.sendMail({
+      to: {
+        name: user.name,
+        email: user.email,
+      },
+      subject: 'Barbetto Password Recovery',
+      templateData: {
+        templateFile: passwordRecoveryMailTemplate,
+        variables: {
+          name: user.name,
+          link: `http://localhost:3000/reset_password?token=${token}`,
+        },
+      },
+    });
   }
 }
 
