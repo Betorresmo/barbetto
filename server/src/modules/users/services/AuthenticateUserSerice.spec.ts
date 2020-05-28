@@ -43,7 +43,7 @@ describe('AuthenticateUser', () => {
   it('should be not able to authenticate a non-existent user', async () => {
     const [email, password] = ['george@email.com', '123456'];
 
-    expect(
+    await expect(
       authenticateUser.run({
         email,
         password,
