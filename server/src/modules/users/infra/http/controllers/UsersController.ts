@@ -4,8 +4,8 @@ import { container } from 'tsyringe';
 import CreateUserService from '@modules/users/services/CreateUserService';
 
 class UsersController {
-  public async create(req: Request, res: Response): Promise<Response> {
-    const { name, email, password } = req.body;
+  public async create(request: Request, response: Response): Promise<Response> {
+    const { name, email, password } = request.body;
 
     const createUser = container.resolve(CreateUserService);
 
@@ -17,7 +17,7 @@ class UsersController {
 
     delete user.password;
 
-    return res.status(201).json(user);
+    return response.status(201).json(user);
   }
 }
 

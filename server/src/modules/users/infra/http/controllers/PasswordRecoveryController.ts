@@ -4,8 +4,8 @@ import { container } from 'tsyringe';
 import SendPasswordRecoveryEmailService from '@modules/users/services/SendPasswordRecoveryEmailService';
 
 class PasswordRecoveryController {
-  public async create(req: Request, res: Response): Promise<Response> {
-    const { email } = req.body;
+  public async create(reqyest: Request, response: Response): Promise<Response> {
+    const { email } = reqyest.body;
     const sendPasswordRecoveryEmail = container.resolve(
       SendPasswordRecoveryEmailService,
     );
@@ -14,7 +14,7 @@ class PasswordRecoveryController {
       email,
     });
 
-    return res.status(204).json();
+    return response.status(204).json();
   }
 }
 

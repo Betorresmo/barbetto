@@ -32,7 +32,7 @@ describe('UpdateProfile', () => {
       name: 'George Johnson',
       email: 'george.johnson@email.com',
       password: '123456',
-      newPassword: '654321',
+      new_password: '654321',
     });
 
     expect(updatedUser.name).toBe('George Johnson');
@@ -82,7 +82,7 @@ describe('UpdateProfile', () => {
     const updatedUser = await updateProfile.execute({
       user_id: user.id,
       password: '123456',
-      newPassword: '654321',
+      new_password: '654321',
     });
 
     expect(updatedUser.password).toBe('hash654321');
@@ -95,7 +95,7 @@ describe('UpdateProfile', () => {
         name: 'George Johnson',
         email: 'george.johnson@email.com',
         password: '123456',
-        newPassword: '654321',
+        new_password: '654321',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -148,7 +148,7 @@ describe('UpdateProfile', () => {
         user_id: user.id,
         name: 'George Johnson',
         email: 'george.johnson@email.com',
-        newPassword: '654321',
+        new_password: '654321',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
@@ -166,7 +166,7 @@ describe('UpdateProfile', () => {
         name: 'George Johnson',
         email: 'george.johnson@email.com',
         password: 'wrong',
-        newPassword: '654321',
+        new_password: '654321',
       }),
     ).rejects.toBeInstanceOf(AppError);
   });

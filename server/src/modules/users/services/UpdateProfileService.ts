@@ -12,7 +12,7 @@ interface IRequest {
   name?: string;
   email?: string;
   password?: string;
-  newPassword?: string;
+  new_password?: string;
 }
 
 @injectable()
@@ -30,9 +30,9 @@ class UpdateProfileService {
     name,
     email,
     password,
-    newPassword,
+    new_password,
   }: IRequest): Promise<User> {
-    if (!name && !email && !password && !newPassword) {
+    if (!name && !email && !password && !new_password) {
       throw new AppError('No data to execute update.', 400);
     }
 
@@ -45,7 +45,7 @@ class UpdateProfileService {
       user.name = name;
     }
 
-    if (email || newPassword) {
+    if (email || new_password) {
       if (!password) {
         throw new AppError('Password required.', 403);
       }
@@ -66,8 +66,8 @@ class UpdateProfileService {
         user.email = email;
       }
 
-      if (newPassword) {
-        user.password = await this.hashProvider.generateHash(newPassword);
+      if (new_password) {
+        user.password = await this.hashProvider.generateHash(new_password);
       }
     }
 
