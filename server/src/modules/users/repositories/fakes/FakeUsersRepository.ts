@@ -1,6 +1,7 @@
 import { uuid } from 'uuidv4';
 
 import IUsersRepository from '@modules/users/repositories/IUsersRepository';
+import IFindAllUsersDTO from '@modules/users/dtos/IFindAllUsersDTO';
 import ICreateUserDTO from '@modules/users/dtos/ICreateUserDTO';
 import User from '@modules/users/infra/typeorm/entities/User';
 
@@ -17,6 +18,16 @@ class FakeUsersRepository implements IUsersRepository {
     const user = this.users.find(userItem => userItem.email === email);
 
     return user;
+  }
+
+  public async findAll({ except_user_id }: IFindAllUsersDTO): Promise<User[]> {
+    let { users } = this;
+
+    if (except_user_id) {
+      users = users.filter(user => user.id !== except_user_id);
+    }
+
+    return users;
   }
 
   public async create(userData: ICreateUserDTO): Promise<User> {
