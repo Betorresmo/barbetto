@@ -1,5 +1,6 @@
 import { Request, Response } from 'express';
 import { container } from 'tsyringe';
+import { classToClass } from 'class-transformer';
 
 import ListAllProvidersService from '@modules/appointments/services/ListAllProvidersService';
 
@@ -13,7 +14,7 @@ class ProvidersController {
       user_id,
     });
 
-    return response.status(200).json(providers);
+    return response.status(200).json(classToClass(providers));
   }
 }
 
