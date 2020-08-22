@@ -1,6 +1,7 @@
 import { injectable, inject } from 'tsyringe';
 import nodemailer, { Transporter } from 'nodemailer';
 import mailgun from 'nodemailer-mailgun-transport';
+import mailConfig from '@config/mail';
 
 import IMailProvider from '@shared/container/providers/MailProvider/models/IMailProvider';
 import IMailTemplateProvider from '@shared/container/providers/MailTemplateProvider/models/IMailTemplateProvider';
@@ -17,8 +18,8 @@ class NodemailerMailProvider implements IMailProvider {
     const transporter = nodemailer.createTransport(
       mailgun({
         auth: {
-          api_key: `${process.env.APP_MAILGUN_KEY}`,
-          domain: `${process.env.APP_MAILGUN_DOMAIN}`,
+          api_key: `${process.env.MAILGUN_KEY}`,
+          domain: `${process.env.MAILGUN_DOMAIN}`,
         },
       }),
     );
@@ -36,10 +37,12 @@ class NodemailerMailProvider implements IMailProvider {
       templateData,
     );
 
+    const { name, email } = mailConfig.defaults.from;
+
     const message = {
       from: {
-        name: from?.name || 'Barbetto Support',
-        address: from?.email || `${process.env.APP_EMAIL_USR}`,
+        name: from?.name || name,
+        address: from?.email || email,
       },
       to: {
         name: to.name,
