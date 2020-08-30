@@ -30,7 +30,7 @@ class RedisCacheProvider implements ICacheProvider {
   }
 
   public async invalidateMultiple(keyPrefix: string): Promise<void> {
-    const keys = await this.redisClient.keys(`${keyPrefix}:`);
+    const keys = await this.redisClient.keys(`${keyPrefix}:*`);
 
     const pipeline = this.redisClient.pipeline();
 
