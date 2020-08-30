@@ -28,9 +28,11 @@ class ListProviderAppointmentsService {
     month,
     day,
   }: IRequest): Promise<Appointment[]> {
+    const cacheKey = `appointments-list:${provider_id}:${year}-${month}-${day}`;
+
     const appointmentsInCache = await this.cacheProvider.retrieve<
       Appointment[]
-    >(`appointments-list:${year}-${month}-${day}:${provider_id}`);
+    >(cacheKey);
 
     if (appointmentsInCache) {
       return appointmentsInCache;
@@ -45,10 +47,7 @@ class ListProviderAppointmentsService {
       },
     );
 
-    await this.cacheProvider.store(
-      `appointments-list:${year}-${month}-${day}:${provider_id}`,
-      appointments,
-    );
+    await this.cacheProvider.store(cacheKey, appointments);
 
     return appointments;
   }
