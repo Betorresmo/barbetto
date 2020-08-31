@@ -4,6 +4,7 @@ import FakeAppointmentsRepository from '@modules/appointments/repositories/fakes
 import FakeNotificationsRepository from '@modules/notifications/repositories/fakes/FakeNotificationsRepository';
 import FakeCacheProvider from '@shared/container/providers/CacheProvider/fakes/FakeCacheProvider';
 import CreateAppointmentService from '@modules/appointments/services/CreateAppointmentService';
+import { date } from '@hapi/joi';
 
 let fakeAppointmentsRepository: FakeAppointmentsRepository;
 let fakeNotificationsRepository: FakeNotificationsRepository;
@@ -38,23 +39,25 @@ describe('CreateAppointment', () => {
   });
 
   it('should not be able to create two appointments in conflicting hours', async () => {
-    jest
-      .spyOn(Date, 'now')
-      .mockImplementationOnce(() => new Date(2020, 5, 1, 11, 0, 0).getTime());
-
-    const appointmentDate = new Date(2020, 5, 1, 12, 0, 0);
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      return new Date(2020, 5, 1, 11, 0, 0).getTime();
+    });
 
     await createAppointment.run({
       provider_id: 'provider-id',
       user_id: 'user-id',
-      date: appointmentDate,
+      date: new Date(2020, 5, 1, 12, 0, 0),
+    });
+
+    jest.spyOn(Date, 'now').mockImplementationOnce(() => {
+      return new Date(2020, 5, 1, 11, 0, 0).getTime();
     });
 
     await expect(
       createAppointment.run({
         provider_id: 'provider-id',
         user_id: 'user-id',
-        date: appointmentDate,
+        date: new Date(2020, 5, 1, 12, 0, 0),
       }),
     ).rejects.toBeInstanceOf(AppError);
   });
