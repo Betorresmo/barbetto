@@ -39,4 +39,39 @@ describe('ListProviderAppointments', () => {
 
     expect(appointments).toEqual([appointment1, appointment2]);
   });
+
+  it('should be able to get the appointments list from cache without triggering a database query', async () => {
+    await fakeAppointmentsRepository.create({
+      user_id: 'user-id',
+      provider_id: 'provider-id',
+      date: new Date(2020, 5, 1, 10, 0, 0),
+    });
+
+    await fakeAppointmentsRepository.create({
+      user_id: 'user-id',
+      provider_id: 'provider-id',
+      date: new Date(2020, 5, 1, 15, 0, 0),
+    });
+
+    await listProviderAppointments.execute({
+      provider_id: 'provider-id',
+      year: 2020,
+      month: 6,
+      day: 1,
+    });
+
+    const repositorySpy = jest.spyOn(
+      fakeAppointmentsRepository,
+      'findByProviderAndDay',
+    );
+
+    await listProviderAppointments.execute({
+      provider_id: 'provider-id',
+      year: 2020,
+      month: 6,
+      day: 1,
+    });
+
+    expect(repositorySpy).not.toHaveBeenCalled();
+  });
 });
