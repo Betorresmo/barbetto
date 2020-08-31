@@ -11,8 +11,12 @@ class FakeCacheProvider implements ICacheProvider {
     this.cache[key] = JSON.stringify(value);
   }
 
-  public async retrieve<T>(key: string): Promise<T> {
+  public async retrieve<T>(key: string): Promise<T | null> {
     const value = this.cache[key];
+
+    if (!value) {
+      return null;
+    }
 
     const parsedValue = JSON.parse(value) as T;
 
