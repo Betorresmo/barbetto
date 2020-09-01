@@ -11,11 +11,11 @@ interface ITokenPayload {
 }
 
 const ensureAuthenticated = (
-  req: Request,
-  res: Response,
+  request: Request,
+  response: Response,
   next: NextFunction,
 ): void => {
-  const authHeader = req.headers.authorization;
+  const authHeader = request.headers.authorization;
 
   if (!authHeader) {
     throw new AppError('JWT missing.', 401);
@@ -27,7 +27,7 @@ const ensureAuthenticated = (
     const decodedToken = verify(token, authConfig.jwt.secret);
     const { sub } = decodedToken as ITokenPayload;
 
-    req.user = { id: sub };
+    request.user = { id: sub };
 
     return next();
   } catch {
