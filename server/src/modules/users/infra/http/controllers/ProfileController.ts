@@ -15,9 +15,7 @@ class ProfileController {
       user_id,
     });
 
-    delete user.password;
-
-    return response.status(200).json(user);
+    return response.status(200).json(classToClass(user));
   }
 
   public async update(request: Request, response: Response): Promise<Response> {
