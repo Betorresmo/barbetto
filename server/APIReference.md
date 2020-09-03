@@ -166,7 +166,7 @@ Response:
   "email": "myNewEmail@email.com", // Optional & Requires current password
   "new_password": "my new password", // Optional & Requires current password
   
-	"password": "123456", // Current password (Is not required to update name)
+  "password": "123456", // Current password (Is not required to update name)
 }
 ```
 
@@ -182,6 +182,6 @@ Response:
   "id": "aa90dceb-bb5e-400d-9279-5f5fb542de47",
   "created_at": "2020-09-01T03:12:10.176Z",
   "updated_at": "2020-09-01T03:12:10.176Z",
-  "avatarUrl": ""http://<hosting>/my-avatar.jpg"
+  "avatarUrl": "http://<hosting>/my-avatar.jpg"
 }
 ```
