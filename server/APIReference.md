@@ -10,10 +10,10 @@ Public (No authentication required)
 `Content-Type: application/json`
 ```js
 {
-	"name": "user-name" //User's name
-	"email": "user@email", //User's email
-	"password": "123456", //User's password
-	"password_confirmation": "123456", //Password confirmation
+  "name": "user-name" //User's name
+  "email": "user@email", //User's email
+  "password": "123456", //User's password
+  "password_confirmation": "123456", //Password confirmation
 }
 ```
 
@@ -39,8 +39,8 @@ Response:
 `Content-Type: application/json`
 ```js
 {
-	"email":"user@email.com",
-	"password":"123456"
+  "email":"user@email.com",
+  "password":"123456"
 }
 ```
 
@@ -69,7 +69,7 @@ Response:
 `Content-Type: application/json`
 ```js
 {
-	"email":"user@email.com",
+  "email":"user@email.com",
 }
 ```
 
@@ -84,9 +84,9 @@ Response:
 `Content-Type: application/json`
 ```js
 {
-	"token": "05b8ed1e-fd7b-49e1-8c24-8a0b50ff3e28", // Token received in /password/forgot
-	"password": "654321", // New passsword
-	"password_confirmation": "654321" //New passsword confirmation
+  "token": "05b8ed1e-fd7b-49e1-8c24-8a0b50ff3e28", // Token received in /password/forgot
+  "password": "654321", // New passsword
+  "password_confirmation": "654321" //New passsword confirmation
 }
 ```
 
@@ -135,7 +135,7 @@ Response:
 `Content-Type: multipart/form-data`
 ```js
 {
-	"avatar": my-avatar.jpg, // Accepts .jpg, .jpeg and .png files
+  "avatar": my-avatar.jpg, // Accepts .jpg, .jpeg and .png files
 }
 ```
 
