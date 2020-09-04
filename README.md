@@ -11,4 +11,8 @@
 
 <img alt="Barbetto Preview" title="#Barbetto" src="./github/preview.gif" width="100%" />
 
+### [🛰️ API Reference](https://github.com/Betorresmo/Barbetto/blob/master/server/APIReference.md)
+
+<br><br>
+
 ## 📬 [Contact me](https://www.linkedin.com/in/guerrero-roberto/)
