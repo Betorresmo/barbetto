@@ -14,6 +14,8 @@
 
 ### 🧙‍♂️ User Routes
 
+<br><br>
+
 #### `POST` `/users`
 Public
 #### Registrates a new user
@@ -202,6 +204,8 @@ Response:
 <br><br>
 
 ### 🗓 Appointment Routes
+
+<br><br>
 
 #### `POST` `/appointments`
 Private
