@@ -14,7 +14,7 @@
 
 ### 🧙‍♂️ User Routes
 
-<br><br>
+<br>
 
 #### `POST` `/users`
 Public
@@ -205,7 +205,7 @@ Response:
 
 ### 🗓 Appointment Routes
 
-<br><br>
+<br>
 
 #### `POST` `/appointments`
 Private
