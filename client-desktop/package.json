@@ -14,7 +14,7 @@
     "@unform/core": "^2.1.0",
     "@unform/web": "^2.1.0",
     "axios": "^0.19.2",
-    "elliptic": "^6.5.3",
+    "elliptic": "^6.5.4",
     "lodash": "^4.17.19",
     "polished": "^3.5.2",
     "react": "^16.13.1",
