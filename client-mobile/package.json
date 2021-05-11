@@ -17,7 +17,7 @@
     "@unform/core": "^2.1.0",
     "@unform/mobile": "^2.1.0",
     "axios": "^0.19.2",
-    "lodash": "^4.17.19",
+    "lodash": "^4.17.21",
     "logkitty": "^0.7.1",
     "polished": "^3.6.3",
     "react": "16.11.0",
